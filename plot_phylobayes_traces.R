@@ -51,7 +51,7 @@ if (!is.na(othermax)) {
 }
 paste("using", maxlength, "as max iterations in plot")
 
-llrange  = range( pretty( range(trace1dat[,4])) )
+llrange  = range( pretty( range( c( trace1dat[,4],trace2dat[,4]) ) ) )
 serange  = range( pretty( range( c( trace1dat[,8],trace2dat[,8]) ) ) )
 lenrange = range( pretty( range( c( trace1dat[,5],trace2dat[,5]) ) ) )
 alpharange = range( pretty( range( c( trace1dat[,6],trace2dat[,6]) ) ) )
