@@ -75,3 +75,50 @@ The `.gif`s are then combined into an animated tree, also using `convert`.
 A [useful post about data visualization](http://viewshed.matinic.us/2018/01/13/1139/) suggested using a program called [gifsicle](https://www.lcdf.org/gifsicle/) to further compress the `.gif`. As only 5 different colors are used (red for the outgroup, brown for choanoflagellates, green for ctenophores, and purple for sponges, and the rest black), this can be reduced in the final image. Specifying fewer than 16 colors starts to have problems with rendering the main ones.
 
 `gifsicle -O3 animated_tree.gif --colors 16 -o animated_tree_reduced_color.gif`
+
+## rf_distance
+Pairwise [Robinson-Foulds distances](https://en.wikipedia.org/wiki/Robinson%E2%80%93Foulds_metric) can be quickly calculated for all trees in a file of unrooted trees using the `-f r` option in [RAxML](https://github.com/stamatak/standard-RAxML). This can work directly on the `.treelist` output file of `phylobayes`.
+
+As this is an **all-versus-all** pairwise analysis, the computational time may increase exponentially with more trees, thus it may be useful to subset the trees, here taking the first 500 (i.e. the "normal" *burn-in* period, which is where all activity actually is):
+
+`head -n 500 Day_CAT_GTR2.treelist > Day_CAT_GTR2.treelist_first_500`
+
+Then specify the tree list with the option `-z`, and a model `-m` must be given (even though it appears nothing is calculated with it).
+
+`raxmlHPC-PTHREADS-SSE3 -f r -z Day_CAT_GTR2.treelist_first_500 -n Day_CAT_GTR2_500t -m PROTGAMMALG`
+
+The RAxML output is pairwise RF distance, one per line. It is clear from the output that a lot of changes happen in the first iterations, but not many after several hundred iterations. The data refer to tree 0 against tree 1, the RF distance (raw) and the normalized distance (relative to total nodes).
+
+```
+0 1: 96 0.657534
+0 2: 114 0.780822
+0 3: 116 0.794521
+0 4: 124 0.849315
+0 5: 130 0.890411
+0 6: 130 0.890411
+0 7: 132 0.904110
+0 8: 132 0.904110
+0 9: 138 0.945205
+0 10: 138 0.945205
+0 11: 144 0.986301
+0 12: 144 0.986301
+0 13: 146 1.000000
+0 14: 146 1.000000
+0 15: 146 1.000000
+...
+0 495: 146 1.000000
+0 496: 146 1.000000
+0 497: 146 1.000000
+0 498: 146 1.000000
+0 499: 146 1.000000
+```
+
+In the interest of directly examining the chain (i.e. seeing the approach to the optimal tree), only those trees in sequence (in the order of the chain) should be considered. RF distances of trees that are in sequence can be extracted using the `filter_rfd.py` script.
+
+`filter_rfd.py RAxML_RF-Distances.Day_CAT_GTR2_500t > filtered_Day_CAT_GTR2_RFd.txt`
+
+Then plot the filtered RF distances in R, which will automatically generate a PDF with the same basename as the input file:
+
+`Rscript graph_filtered_rfd.R filtered_Day_CAT_GTR2_RFd.txt`
+
+![filtered_Day_CAT_GTR2_RFd.png](https://github.com/wrf/graphphylo/blob/master/examples/filtered_Day_CAT_GTR2_RFd.png)
