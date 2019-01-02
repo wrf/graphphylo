@@ -14,7 +14,7 @@ By default, this will plot up to the number of iterations (plus 0.1 * the length
 
 The [Dayhoff recoded dataset](https://bitbucket.org/bzxdp/feuda_et_al_2017) from [Whelan et al 2017](https://www.nature.com/articles/s41559-017-0331-3): the chains were run for 25000 iterations, though there is essentially no change after 250, meaning it is potentially run 100x longer than it needed to be.
 
-Running `bpcomp` on the both chains gives exactly the same values reported in the paper:
+Running `bpcomp` on both chains gives exactly the same values reported in the paper:
 
 ```
 $ ./bpcomp -x 7000 Day_CAT_GTR1 Day_CAT_GTR2
@@ -87,7 +87,7 @@ Then specify the tree list with the option `-z`, and a model `-m` must be given 
 
 `raxmlHPC-PTHREADS-SSE3 -f r -z Day_CAT_GTR2.treelist_first_500 -n Day_CAT_GTR2_500t -m PROTGAMMALG`
 
-The RAxML output is pairwise RF distance, one per line. It is clear from the output that a lot of changes happen in the first iterations, but not many after several hundred iterations. The data refer to tree 0 against tree 1, the RF distance (raw) and the normalized distance (relative to total nodes).
+The RAxML output is pairwise RF distance, one per line. It is clear from the output that a lot of changes happen in the first iterations, but not many after several hundred iterations. The data refer to tree 0 against tree 1, the RF distance (raw, 96) and the normalized distance (relative to total nodes, 0.65).
 
 ```
 0 1: 96 0.657534
@@ -113,9 +113,18 @@ The RAxML output is pairwise RF distance, one per line. It is clear from the out
 0 499: 146 1.000000
 ```
 
-In the interest of directly examining the chain (i.e. seeing the approach to the optimal tree), only those trees in sequence (in the order of the chain) should be considered. RF distances of trees that are in sequence can be extracted using the `filter_rfd.py` script.
+In the interest of directly examining the chain (i.e. seeing the approach to the optimal tree), only those trees in sequence (in the order of the chain) should be considered. That is, tree 0 against tree 1, then 1 against 2, and so forth. RF distances of trees that are in sequence can be extracted using the `filter_rfd.py` script.
 
 `filter_rfd.py RAxML_RF-Distances.Day_CAT_GTR2_500t > filtered_Day_CAT_GTR2_RFd.txt`
+
+```
+0 1: 96 0.657534
+1 2: 68 0.465753
+2 3: 74 0.506849
+3 4: 78 0.534247
+4 5: 78 0.534247
+...
+```
 
 Then plot the filtered RF distances in R, which will automatically generate a PDF with the same basename as the input file:
 
