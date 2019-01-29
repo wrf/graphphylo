@@ -1,5 +1,10 @@
 # graphphylo
-visualization of phylogenetic output files
+visualization of phylogenetic output files, analyses, and substitution matrices
+
+* [plot_phylobayes_traces](https://github.com/wrf/graphphylo#plot_phylobayes_traces) - plot parameters from the trace file
+* [scan_treelist](https://github.com/wrf/graphphylo#scan_treelist) - make animation of the treelist
+* [RF distance](https://github.com/wrf/graphphylo#rf_distance) - make plot of progressive RF distance
+* [model visualization](https://github.com/wrf/graphphylo#model-visualization) - reference plots of model parameters
 
 ## plot_phylobayes_traces
 R script to plot several parameters from the [phylobayes](https://github.com/bayesiancook/pbmpi) trace files. This can be run on a pair of trace files, one from each chain. The output file is a `pdf` automatically named based on the name of the first file. So a hypothetical pair of files `matrix_chain_1.trace` and `matrix_chain_2.trace` will produce a file called `matrix_chain_1.trace.pdf`.
@@ -131,3 +136,18 @@ Then plot the filtered RF distances in R, which will automatically generate a PD
 `Rscript graph_filtered_rfd.R filtered_Day_CAT_GTR2_RFd.txt`
 
 ![filtered_Day_CAT_GTR2_RFd.png](https://github.com/wrf/graphphylo/blob/master/examples/filtered_Day_CAT_GTR2_RFd.png)
+
+## model visualization
+The [CAT model](https://doi.org/10.1093/molbev/msh112) normally will dynamic generate substitution matrices for categories of sites, but usage of fixed substitution matrices (named C10 through C60) can also be selected. AA frequency data is included in the [phylobayes source code](https://github.com/bayesiancook/pbmpi/blob/master/sources/BiologicalSequences.h)
+
+![cat_c10_diagrams_raw.png](https://github.com/wrf/graphphylo/blob/master/mixture_model/cat_c10_diagrams_raw.png)
+
+The default order appears to be arbitrary. Here, they are rearranged in two ways. First, the sets with the lowest variance are put first, showing that many categories can be similar, but ultimately differ based on the inclusion of certain amino acids. Secondly, the amino acids themselves are reordered by a rough measure hydrophobicity (scores [from here](https://www.sigmaaldrich.com/life-science/metabolomics/learning-center/amino-acid-reference-chart.html)).
+
+![cat_c10_diagrams_var.png](https://github.com/wrf/graphphylo/blob/master/mixture_model/cat_c10_diagrams_var.png)
+
+Other mixture models have been created. Here, a plot is made showing the [two-category mixture model EX2](https://doi.org/10.1098/rstb.2008.0180), where the two substitution matrices differ by solvent exposure. The diagonal shows the difference in overall frequency, whereby polar/charged AAs are commonly exposed (in orange), and nonpolar ones are usually buried (in purple). Intersections of two AAs show the relative preference for that transition when in one of the two states. That is, when R is buried, the substitution to K is strongly preferred over any other substitution. It is likely that R-K is preserving an internal salt bridge. This also implies that charge amino acids on the surface may readily be substituted into many other polar AAs, thus making the relative preference less pronounced. The same applies to nonpolar amino acids, that generally change to only certain other nonpolar AAs when exposed. Polar AAs rarely change to nonpolar ones, regardless of solvent exposure.
+
+![EX2_model_bur-exp_difference.png](https://github.com/wrf/graphphylo/blob/master/mixture_model/EX2_model_bur-exp_difference.png)
+
+
