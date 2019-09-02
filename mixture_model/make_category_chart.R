@@ -9,7 +9,7 @@
 # AAs in alphabetic order
 aalist = c("A", "R", "N", "D", "C", "Q", "E", "G", "H", "I", "L", "K", "M", "F", "P", "S", "T", "W", "Y", "V")
 # colors from sand to deep red
-colset = c("#ffffb2", "#ffeda0", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026", "#dd1c77")
+colset = c("#ffffb2", "#ffeda0", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026", "#dd1c77",  "#660821")
 
 # data from https://www.sigmaaldrich.com/life-science/metabolomics/learning-center/amino-acid-reference-chart.html
 # which itself derives from:
@@ -45,7 +45,7 @@ text(10,0,"CAT-C10 Model", cex=1.6)
 mtext(rev(1:ncat), side=2, line=1, at=1:ncat, cex=1.4, las=1)
 # iterate over each category, print letters where size and color are related to frequency
 for (i in 1:ncat) {
-	points(1:20, rep(ncat-i+1,20), pch=aalist, cex=(7+log(catlist[,i]))/2, col=colset[floor((7+log(catlist[,i]))/2)+2])
+	points(1:20, rep(ncat-i+1,20), pch=aalist, cex=(10*(catlist[,i])), col=colset[floor((7*(catlist[,i])))+2])
 }
 dev.off()
 
@@ -58,7 +58,7 @@ plot(0,0,type='n',xlim=c(1,20), ylim=c(0,ncat), axes=FALSE, frame.plot=FALSE, xl
 text(10,0,"CAT-C10 Model", cex=1.8)
 mtext(rev(1:ncat), side=2, line=1, at=1:ncat, cex=1.4, las=1)
 for (i in 1:ncat) {
-	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2, col=colset[floor((7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2)+2])
+	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(10*(catlist[,varindex$ix[i]][s_hyd$ix])), col=colset[floor((7*(catlist[,varindex$ix[i]][s_hyd$ix])))+2])
 }
 dev.off()
 
@@ -98,7 +98,7 @@ plot(0,0,type='n',xlim=c(1,20), ylim=c(0,ncat), axes=FALSE, frame.plot=FALSE, xl
 text(10,-0.2,"CAT-C20 Model", cex=1.8)
 mtext(rev(1:ncat), side=2, line=1, at=1:ncat, cex=1.4, las=1)
 for (i in 1:ncat) {
-	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2, col=colset[floor((7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2)+2])
+	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(10*(catlist[,varindex$ix[i]][s_hyd$ix])), col=colset[floor((7*(catlist[,varindex$ix[i]][s_hyd$ix])))+2])
 }
 dev.off()
 
@@ -149,7 +149,7 @@ plot(0,0,type='n',xlim=c(1,20), ylim=c(0,ncat), axes=FALSE, frame.plot=FALSE, xl
 text(10,-0.4,"CAT-C30 Model", cex=1.8)
 mtext(rev(1:ncat), side=2, line=1, at=1:ncat, cex=1.4, las=1)
 for (i in 1:ncat) {
-	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2, col=colset[floor((7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2)+2])
+	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(10*(catlist[,varindex$ix[i]][s_hyd$ix])), col=colset[floor((7*(catlist[,varindex$ix[i]][s_hyd$ix])))+2])
 }
 dev.off()
 
@@ -210,7 +210,7 @@ plot(0,0,type='n',xlim=c(1,20), ylim=c(0,ncat), axes=FALSE, frame.plot=FALSE, xl
 text(10,-1,"CAT-C40 Model", cex=1.8)
 mtext(rev(1:ncat), side=2, line=1, at=1:ncat, cex=1.4, las=1)
 for (i in 1:ncat) {
-	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2, col=colset[floor((7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2)+2])
+	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(10*(catlist[,varindex$ix[i]][s_hyd$ix])), col=colset[floor((7*(catlist[,varindex$ix[i]][s_hyd$ix])))+2])
 }
 dev.off()
 
@@ -281,7 +281,7 @@ plot(0,0,type='n',xlim=c(1,20), ylim=c(0,ncat), axes=FALSE, frame.plot=FALSE, xl
 text(10,-1,"CAT-C50 Model", cex=1.8)
 mtext(rev(1:ncat), side=2, line=1, at=1:ncat, cex=1.4, las=1)
 for (i in 1:ncat) {
-	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2, col=colset[floor((7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2)+2])
+	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(10*(catlist[,varindex$ix[i]][s_hyd$ix])), col=colset[floor((7*(catlist[,varindex$ix[i]][s_hyd$ix])))+2])
 }
 dev.off()
 
@@ -361,6 +361,6 @@ plot(0,0,type='n',xlim=c(1,20), ylim=c(0,ncat), axes=FALSE, frame.plot=FALSE, xl
 text(10,-1,"CAT-C60 Model", cex=1.8)
 mtext(rev(1:ncat), side=2, line=1, at=1:ncat, cex=1.4, las=1)
 for (i in 1:ncat) {
-	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2, col=colset[floor((7+log(catlist[,varindex$ix[i]][s_hyd$ix]))/2)+2])
+	points(1:20, rep(ncat-i+1,20), pch=aalist[s_hyd$ix], cex=(10*(catlist[,varindex$ix[i]][s_hyd$ix])), col=colset[floor((7*(catlist[,varindex$ix[i]][s_hyd$ix])))+2])
 }
 dev.off()
