@@ -2,7 +2,7 @@
 #
 # scan_treelist.py created by WRF 2018-03-07
 
-'''scan_treelist.py  last modified 2018-03-08
+'''scan_treelist.py  last modified 2019-09-25
 
 scan_treelist.py -t CAT_GTR1.treelist -m 500 -r Homo_sapiens
 
@@ -24,22 +24,26 @@ import argparse
 import os
 import time
 import gzip
-import cStringIO
 import matplotlib
 from collections import defaultdict
 from Bio import Phylo
 
+try: # for python2
+	import cStringIO as io
+except ImportError: # for python3
+	import io
+
 def get_names_to_colors(colorfile):
 	'''read color index file and return a dict where key is species name and value is color'''
 	colordict = {}
-	print >> sys.stderr, "# reading color vector {}".format(colorfile), time.asctime()
+	sys.stderr.write("# reading color vector {}  ".format(colorfile) + time.asctime() + os.linesep)
 	for line in open(colorfile,'r'):
 		line = line.strip()
 		if line:
 			lsplits = line.split("\t")
 			# should be as Genus_species   #aa2255
 			colordict[lsplits[0]] = lsplits[1]
-	print >> sys.stderr, "# found colors for {} species".format( len(colordict) ), time.asctime()
+	sys.stderr.write("# found colors for {} species  ".format( len(colordict) ) + time.asctime() + os.linesep)
 	return colordict
 
 def main(argv, wayout):
@@ -58,20 +62,20 @@ def main(argv, wayout):
 
 	if not os.path.exists(args.directory):
 		os.mkdir(args.directory)
-		print >> sys.stderr, "# Creating directory {}".format(args.directory), time.asctime()
+		sys.stderr.write("# Creating directory {}  ".format(args.directory) + time.asctime() + os.linesep)
 	elif os.path.isdir(args.directory):
-		print >> sys.stderr, "# Using directory {}".format(args.directory), time.asctime()
+		sys.stderr.write("# Using directory {}  ".format(args.directory) + time.asctime() + os.linesep)
 
 	if args.treelist.rsplit('.',1)[1]=="gz": # autodetect gzip format
 		opentype = gzip.open
-		print >> sys.stderr, "# reading treelist {} as gzipped".format(args.treelist), time.asctime()
+		sys.stderr.write("# reading treelist {} as gzipped  ".format(args.treelist) + time.asctime() + os.linesep)
 	else: # otherwise assume normal open
 		opentype = open
-		print >> sys.stderr, "# reading treelist {}".format(args.treelist), time.asctime()
+		sys.stderr.write("# reading treelist {}  ".format(args.treelist) + time.asctime() + os.linesep)
 
 	zerolength = 6
 	if args.maximum is not None:
-		print >> sys.stderr, "# stopping after {} trees".format(args.maximum), time.asctime()
+		sys.stderr.write("# stopping after {} trees  ".format(args.maximum) + time.asctime() + os.linesep)
 		zerolength = len(str(args.maximum))
 	zerostring = "{}.tree-{:0" + str(zerolength) + "}.png"
 
@@ -84,7 +88,7 @@ def main(argv, wayout):
 		line = line.strip()
 		if line:
 			treecounter += 1
-			treestring = cStringIO.StringIO(line)
+			treestring = io.StringIO(line)
 			tree = Phylo.read(treestring,"newick")
 			tree.root_with_outgroup(args.root_taxon)
 			tree.ladderize()
@@ -96,14 +100,14 @@ def main(argv, wayout):
 				matplotlib.pyplot.title(args.title)
 			matplotlib.pyplot.savefig(outtreename)
 			matplotlib.pyplot.close()
-			print >> sys.stdout, "tree", treecounter, "as", outtreename
+			sys.stdout.write( "tree {} as {}\n".format( treecounter, outtreename ) )
 			if (args.maximum is not None) and (treecounter >= args.maximum):
-				print >> sys.stderr, "# encountered final tree {}".format(treecounter), time.asctime()
+				sys.stderr.write("# encountered final tree {}  ".format(treecounter) + time.asctime() + os.linesep)
 				break
 		else:
-			print >> sys.stderr, "WARNING: line {} is empty".format(linecounter)
-	print >> sys.stderr, "# {} lines for {} trees".format( linecounter, treecounter )
-	#print >> sys.stderr, eol_counter
+			sys.stderr.write("WARNING: line {} is empty\n".format(linecounter) )
+	sys.stderr.write("# {} lines for {} trees  ".format( linecounter, treecounter ) + os.linesep)
+	#sys.stderr.write("{}".format(eol_counter) )
 
 if __name__ == "__main__":
 	main(sys.argv[1:], sys.stdout)
