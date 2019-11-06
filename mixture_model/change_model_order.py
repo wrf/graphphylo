@@ -23,29 +23,28 @@ def main(argv, wayout):
 	args = parser.parse_args(argv)
 
 	aavalues = defaultdict(dict) # dict of dicts where key is AA, value is dict of AA to score
-	print >> sys.stderr, "# reading substitution matrix from {}, using AA order as: {}".format( args.input , args.default_order )
+	sys.stderr.write("# reading substitution matrix from {}, using AA order as: {}\n".format( args.input , args.default_order ) )
 	for i,line in enumerate(open(args.input, 'r')):
 		line = line.strip()
-		lsplits = line.split(' ')
+		lsplits = line.split(' ') # assume space separated values
 		for j,score in enumerate(lsplits):
 			if i < 19:
 				# first should be A to R / R to A meaning 0-1 / 1-0
 				# then A to N, R to N / N to A, N to R meaning 0-2 1-2 / 2-0 2-1
 				aavalues[ args.default_order[i+1] ][ args.default_order[j] ] = score
 				aavalues[ args.default_order[j] ][ args.default_order[i+1] ] = score
-			else: # last line is overall frequency
+			else: # last line is overall frequency with 20 values
 				aavalues[ args.default_order[j] ][ args.default_order[j] ] = score
 
-	print >> sys.stderr, "# writing new substitution matrix in order of {}".format( args.new_order )
+	sys.stderr.write("# writing new substitution matrix in order of {}\n".format( args.new_order ) )
 	for i,let1 in enumerate(args.new_order):
 		scorelist = []
 		for j,let2 in enumerate(args.new_order[:i]):
 			scorelist.append(aavalues[let1][let2])
 		if scorelist:
-			print >> sys.stdout, " ".join(scorelist)
+			sys.stdout.write("{}\n".format( " ".join(scorelist) ) )
 	basefreq = [aavalues[letter][letter] for letter in args.new_order]
-	print >> sys.stdout, " ".join(basefreq)
-		
+	sys.stdout.write("{}\n".format( " ".join(basefreq) ) )
 
 if __name__ == "__main__":
 	main(sys.argv[1:], sys.stdout)
