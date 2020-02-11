@@ -54,7 +54,7 @@ meandiff    : 0.0211733
 ## scan_treelist
 Despite the above statistical uncertainty, the list of trees itself can be converted into an animated gif, showing how the tree topology becomes fixed after a short period. Most of the changes after this point are within clades, or adjustments of branch lengths. Here is another example from the re-analyses by [Feuda et al](https://bitbucket.org/bzxdp/feuda_et_al_2017), using the D20 dataset from [Whelan et al 2015](https://figshare.com/articles/Error_signal_and_the_placement_of_Ctenophora_sister_to_all_other_animals/1334306) under the CAT-GTR model in `phylobayes`. Sponges and ctenophores are both monophyletic after 50 iterations, and the entire topology is basically fixed at 100. As this is visualizing only one chain, this may imply that the chain is stuck in a local maximum.
 
-**Note: this script requires** `Bio` **and** `matplotlib` **Python libraries**
+**Note: this script requires** `Bio` **and** `matplotlib` **Python libraries, and appears to require python-tk (TK interface)**. **This can be installed on Ubuntu with** `sudo apt install python3-tk`
 
 Several steps are needed to make a similar animation. First, the `.treelist` file needs to be parsed by the `scan_treelist.py` script. This generates `.png` files for each tree in the file. As this might be thousands of trees, it is recommended to specify a maximum with `-m`, maybe a few hundred. The output images are of a rooted tree, so a rooting taxon must be given with `-r`. In this case, the fungi *Spizellomyces punctatus* is used as an outgroup to root animals (though other fungi will appear as the next branch up).
 
