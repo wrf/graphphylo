@@ -138,7 +138,7 @@ Then plot the filtered RF distances in R, which will automatically generate a PD
 ![filtered_Day_CAT_GTR2_RFd.png](https://github.com/wrf/graphphylo/blob/master/examples/filtered_Day_CAT_GTR2_RFd.png)
 
 ## model visualization
-The [CAT model](https://doi.org/10.1093/molbev/msh112) normally will dynamic generate substitution matrices for categories of sites, but usage of fixed substitution matrices (named C10 through C60) can also be selected. AA frequency data is included in the [phylobayes source code](https://github.com/bayesiancook/pbmpi/blob/master/sources/BiologicalSequences.h)
+The [CAT model](https://doi.org/10.1093/molbev/msh112) normally will dynamic generate substitution matrices for categories of sites, but usage of fixed substitution matrices (named C10 through C60) can also be selected. AA frequency data is included in the [phylobayes source code](https://github.com/bayesiancook/pbmpi/blob/master/sources/BiologicalSequences.h), though is easier to extract the model frequencies from the [IQtree source code](https://github.com/Cibiv/IQ-TREE/blob/master/model/modelprotein.cpp)
 
 ![cat_c10_diagrams_raw.png](https://github.com/wrf/graphphylo/blob/master/mixture_model/cat_c10_diagrams_raw.png)
 
@@ -149,5 +149,55 @@ The default order appears to be arbitrary. Here, they are rearranged in two ways
 Other mixture models have been created. Here, a plot is made showing the [two-category mixture model EX2](https://doi.org/10.1098/rstb.2008.0180), where the two substitution matrices differ by solvent exposure. The diagonal shows the difference in overall frequency, whereby polar/charged AAs are commonly exposed (in orange), and nonpolar ones are usually buried (in purple). Intersections of two AAs show the relative preference for that transition when in one of the two states. That is, when R is buried, the substitution to K is strongly preferred over any other substitution. It is likely that R-K is preserving an internal salt bridge. This also implies that charge amino acids on the surface may readily be substituted into many other polar AAs, thus making the relative preference less pronounced. The same applies to nonpolar amino acids, that generally change to only certain other nonpolar AAs when exposed. Polar AAs rarely change to nonpolar ones, regardless of solvent exposure.
 
 ![EX2_model_bur-exp_difference.png](https://github.com/wrf/graphphylo/blob/master/mixture_model/EX2_model_bur-exp_difference.png)
+
+## understanding phylobayes output
+Since this does not appear to be in the [manual](https://github.com/bayesiancook/pbmpi), this is what the chain appears to contain as best as I can tell:
+
+`head -n 20 simion2017_bottom_10k.chain`
+
+```
+(((((Salpingoeca_punica_03:0.12065181307487,Ministeria_vibrans:0.0352483505492743)...;
+1
+10
+1
+5000
+1
+1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	
+
+0.752456	1.10324	1.6655	0.163412	0.354872	0.248254	0.657502	0.630945	0.728152	0.17976	0.50081	0.69962	0.598637	0.0861455	0.0876559	0.892558	0.0311917	1.3371	0.386137	0.29771	1.39336	0.328663	0.615405	1.2522	1.13879	1.445	0.842922	0.906381	0.754849	0.318021	0.227907	1.5612	0.214874	0.0225296	0.472869	1.00689	0.139297	0.883171	1.67927	1.70409	0.664364	2.06539	0.559632	0.695682	0.801497	3.25483	0.0707738	1.5771	0.466999	1.14675	0.0776192	0.704972	0.0253761	2.69223	0.164571	3.93672	4.63184	0.48477	0.56836	2.92229	0.577695	2.01158	0.771927	0.0566555	0.248625	1.0663	2.96381	1.42662	1.09149	1.90944	2.19236	0.355058	0.703829	0.431295	1.14303	0.483646	3.71787	0.683371	2.13353	1.41832	0.543885	0.754606	1.31183	0.784504	2.52064	0.564413	0.494879	0.338373	1.54069	0.803089	3.09483	0.174367	0.718524	1.21767	0.129853	0.195495	0.0314307	0.280545	0.694194	2.21928	0.431252	0.194706	0.9947	0.0866573	1.37641	0.476275	0.434498	2.62462	0.804932	0.636178	0.306858	0.243217	1.25363	0.439173	0.998232	0.0338243	3.21103	1.41567	0.489619	0.596672	0.182142	0.432279	0.273841	1.25503	1.50839	1.88983	0.567022	3.82803	0.852682	0.359292	0.809722	0.130428	0.157673	0.775841	1.73623	5.32759	1.55121	0.580744	0.87162	0.229947	0.785182	0.617069	0.883117	0.777978	1.01713	1.23474	0.13288	0.178909	0.317019	1.03443	0.331836	0.072567	0.594149	1.62566	1.11257	0.571428	0.342329	0.258291	0.76213	0.546536	0.474314	0.518533	0.705117	1.0516	0.0813968	1.30125	0.440674	0.198017	2.60856	0.0214799	0.70356	1.13102	0.666204	1.11166	2.0335	2.07065	1.10783	0.862025	1.09893	0.837753	1.46409	0.102767	0.583503	0.496023	0.286137	1.11899	0.757297	1.38018	0.148231	2.41132	
+
+0.05092	0.308805	0.0273121	0.21894	0.00244624	0.00380969	0.0402974	0.00654627	0.0333059	0.00462414	0.0543895	0.0144712	0.0187349	0.000976424	0.0364146	0.0354139	0.100391	0.012741	0.0209127	0.00854789	
+0.0282293	0.00439629	0.0105243	0.102116	5.72272e-05	0.0559579	0.0761836	0.187137	0.0280789	0.055285	0.0139803	0.0778611	0.0335942	0.00918408	0.0168477	0.0469259	0.00559582	0.0693726	0.103094	0.0755784	
+0.00982036	0.0324977	0.038993	0.124121	0.0128107	0.0232892	0.155201	0.0223525	0.193735	0.0273551	0.0118491	0.10893	4.91702e-05	0.0313182	0.0681411	0.0128091	0.0430973	0.0203015	0.0207741	0.0425543	
+...
+```
+
+This likely corresponds to:
+
+```
+1 tree at the start (?) of that iteration
+2 ?, value 1 appears constant between iterations
+3 ? could be NSPR kappa or kmax, not in any other file
+4 appears to be alpha parameter, found in trace file
+5 probably refnmodemax, value 5000 appears constant between iterations
+6 ?
+7 20 numbers, possibly some starting values for each amino acid (last tab is blank)
+8 blank
+9 190 floats, probably 19*20/2 substitution frequencies (last tab is blank)
+10 blank
+begin 5000x 20-float lines, probably standing probabilities of each category
+5011 in this dataset 10384 tab separated integers, for 10383 sites (last tab is blank)
+```
+
+Line 2 is some constant, maybe run status:
+
+`grep -P ";$1" -c simion2017_bottom_10k.chain`
+
+Line 5, the `5000` only appears once in the code, hence is probably that:
+
+`grep 5000 ~/pbmpi/sources/*`
+
+`SBDPProfileProcess.h:const int refnmodemax = 5000;`
+
 
 
