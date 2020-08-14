@@ -5,6 +5,7 @@ visualization of phylogenetic output files, analyses, and substitution matrices
 * [scan_treelist](https://github.com/wrf/graphphylo#scan_treelist) - make animation of the treelist
 * [RF distance](https://github.com/wrf/graphphylo#rf_distance) - make plot of progressive RF distance
 * [model visualization](https://github.com/wrf/graphphylo#model-visualization) - reference plots of model parameters
+* [ancestral state](https://github.com/wrf/graphphylo#ancestral_state) - converting ancestral state probability into fasta sequence
 
 ## plot_phylobayes_traces
 R script to plot several parameters from the [phylobayes](https://github.com/bayesiancook/pbmpi) trace files. This can be run on a pair of trace files, one from each chain. The output file is a `pdf` automatically named based on the name of the first file. So a hypothetical pair of files `matrix_chain_1.trace` and `matrix_chain_2.trace` will produce a file called `matrix_chain_1.trace.pdf`.
@@ -149,6 +150,33 @@ The default order appears to be arbitrary. Here, they are rearranged in two ways
 Other mixture models have been created. Here, a plot is made showing the [two-category mixture model EX2](https://doi.org/10.1098/rstb.2008.0180), where the two substitution matrices differ by solvent exposure. The diagonal shows the difference in overall frequency, whereby polar/charged AAs are commonly exposed (in orange), and nonpolar ones are usually buried (in purple). Intersections of two AAs show the relative preference for that transition when in one of the two states. That is, when R is buried, the substitution to K is strongly preferred over any other substitution. It is likely that R-K is preserving an internal salt bridge. This also implies that charge amino acids on the surface may readily be substituted into many other polar AAs, thus making the relative preference less pronounced. The same applies to nonpolar amino acids, that generally change to only certain other nonpolar AAs when exposed. Polar AAs rarely change to nonpolar ones, regardless of solvent exposure.
 
 ![EX2_model_bur-exp_difference.png](https://github.com/wrf/graphphylo/blob/master/mixture_model/EX2_model_bur-exp_difference.png)
+
+## ancestral state
+This is done in two stages, and must use the [older version 4.1](https://megasun.bch.umontreal.ca/People/lartillot/www/download.html), not the [MPI version](https://github.com/bayesiancook/pbmpi) (as it is not implemented there). First, make a chain of sufficient length:
+
+`~/phylobayes/phylobayes4.1c/data/pb -d Whelan_D16_Opisthokonta_reduced.phy -T d16opi_c1.con.tre -cat -gtr -x 1 200 -s d16_opi_pb_catgtr_for_anc_c1`
+
+Then, generate the ancestral states. This creates a folder of with a lot of files named `.ancstatepostprob`, one for each leaf and each internal node.
+
+`~/phylobayes/phylobayes4.1c/data/ancestral -x 100 1 d16_opi_pb_catgtr_for_anc_c1`
+
+Then, generate the fasta sequence with `ancestral_probability_to_fasta.py`:
+
+`ancestral_probability_to_fasta.py -p  d16_opi_pb_catgtr_for_anc_c1_sample_104_Aque_Scoa.ancstatepostprob > d16_opi_node_104.fasta`
+
+```
+# reading probabilities d16_opi_pb_catgtr_for_anc_c1_sample_104_Aque_Scoa.ancstatepostprob
+WARNING site 244 maxP 0.29 is tied among 2 states
+...
+WARNING site 21204 maxP 0.28 is tied among 2 states
+# counted 23677 lines
+# found probabilities for 23676 sites, target was 23676
+# 52 sites multiple states tied for maxP
+```
+
+Most of the probabilities are quite high, there is little ambiguity in the state calls. In this dataset for this node, 52 out of 23676 have an ambiguous state, so `ancestral_probability_to_fasta.py` will give them `X` in the fasta.
+
+However, amino acid states are generated for ALL positions, including positions that are mostly missing data. If data are missing, then it will copy the state of the closest neighbor. If many are missing, it will still use the state of the next closest. For instance, if you have a clade where only 1 of 10 species has the gene (say 1 genome vs 9 txomes), then all nodes in that clade will copy the sequence of that lone species. The more missing data, the more that the implied state is biased by fewer species.
 
 ## understanding phylobayes output
 Since this does not appear to be in the [manual](https://github.com/bayesiancook/pbmpi), this is what the chain appears to contain as best as I can tell:
