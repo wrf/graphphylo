@@ -5,7 +5,7 @@ visualization of phylogenetic output files, analyses, and substitution matrices
 * [scan_treelist](https://github.com/wrf/graphphylo#scan_treelist) - make animation of the treelist
 * [RF distance](https://github.com/wrf/graphphylo#rf_distance) - make plot of progressive RF distance
 * [model visualization](https://github.com/wrf/graphphylo#model-visualization) - reference plots of model parameters
-* [ancestral state](https://github.com/wrf/graphphylo#ancestral_state) - converting ancestral state probability into fasta sequence
+* [ancestral state](https://github.com/wrf/graphphylo#ancestral-state) - converting ancestral state probability into fasta sequence
 
 ## plot_phylobayes_traces
 R script to plot several parameters from the [phylobayes](https://github.com/bayesiancook/pbmpi) trace files. This can be run on a pair of trace files, one from each chain. The output file is a `pdf` automatically named based on the name of the first file. So a hypothetical pair of files `matrix_chain_1.trace` and `matrix_chain_2.trace` will produce a file called `matrix_chain_1.trace.pdf`.
@@ -152,11 +152,13 @@ Other mixture models have been created. Here, a plot is made showing the [two-ca
 ![EX2_model_bur-exp_difference.png](https://github.com/wrf/graphphylo/blob/master/mixture_model/EX2_model_bur-exp_difference.png)
 
 ## ancestral state
-This is done in two stages, and must use the [older version 4.1](https://megasun.bch.umontreal.ca/People/lartillot/www/download.html), not the [MPI version](https://github.com/bayesiancook/pbmpi) (as it is not implemented there). First, make a chain of sufficient length:
+This is done in two stages, and must use the [older version 4.1](https://megasun.bch.umontreal.ca/People/lartillot/www/download.html), not the [MPI version](https://github.com/bayesiancook/pbmpi) (as it is not implemented there), and then calculate the ancestral state probabilities.
+
+First, make a chain of sufficient length:
 
 `~/phylobayes/phylobayes4.1c/data/pb -d Whelan_D16_Opisthokonta_reduced.phy -T d16opi_c1.con.tre -cat -gtr -x 1 200 -s d16_opi_pb_catgtr_for_anc_c1`
 
-Then, generate the ancestral states. This creates a folder of with a lot of files named `.ancstatepostprob`, one for each leaf and each internal node.
+Then, generate the ancestral state probabilities. This creates a folder of with a lot of files named `.ancstatepostprob`, one for each leaf and each internal node.
 
 `~/phylobayes/phylobayes4.1c/data/ancestral -x 100 1 d16_opi_pb_catgtr_for_anc_c1`
 
@@ -167,6 +169,7 @@ Then, generate the fasta sequence with `ancestral_probability_to_fasta.py`:
 ```
 # reading probabilities d16_opi_pb_catgtr_for_anc_c1_sample_104_Aque_Scoa.ancstatepostprob
 WARNING site 244 maxP 0.29 is tied among 2 states
+WARNING site 277 maxP 0.38 is tied among 2 states
 ...
 WARNING site 21204 maxP 0.28 is tied among 2 states
 # counted 23677 lines
