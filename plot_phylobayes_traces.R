@@ -37,9 +37,10 @@ paste("trace 2 of length", length(trace2dat[,1]) )
 
 logln1 = trace1dat[,4]
 minmaxlogln1 = range(logln1)
-minmaxlogln1
+paste("logL value range:", minmaxlogln1[1], minmaxlogln1[2])
 firstsat1 = minmaxlogln1[1] - (minmaxlogln1[1] - minmaxlogln1[2]) * 0.99
-paste("first value at 99% of max is", firstsat1 )
+first_sat1_index = min( which(logln1 >= firstsat1))
+paste("first value at 99% of max is", firstsat1, "at iteration", first_sat1_index )
 
 tracemax = max( c(length(trace1dat[,1]),length(trace2dat[,1])) )
 maxlength = min( min( which(logln1 >= firstsat1))+min(5000,round(length(trace1dat[,1])/10)), tracemax )
