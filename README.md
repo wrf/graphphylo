@@ -138,6 +138,18 @@ Then plot the filtered RF distances in R, which will automatically generate a PD
 
 ![filtered_Day_CAT_GTR2_RFd.png](https://github.com/wrf/graphphylo/blob/master/examples/filtered_Day_CAT_GTR2_RFd.png)
 
+### with IQTREE ###
+RF distance can also be calculated easily from a phylobayes tree file with [iqtree](http://www.iqtree.org/doc/Command-Reference#computing-robinson-foulds-distance) using the `-rf_adj` option. The output file is named automatically from the input file.
+
+`iqtree2 -rf_adj Day_CAT_GTR2.treelist`
+
+The output format is a header line and then a single line with space-separate RF distances.
+
+```
+XXX        1 25851
+ 96 68 74 78 78 36 72 52 74 34...
+```
+
 ## model visualization
 The [CAT model](https://doi.org/10.1093/molbev/msh112) normally will dynamic generate substitution matrices for categories of sites, but usage of fixed substitution matrices (named C10 through C60) can also be selected. AA frequency data is included in the [phylobayes source code](https://github.com/bayesiancook/pbmpi/blob/master/sources/BiologicalSequences.h), though is easier to extract the model frequencies from the [IQtree source code](https://github.com/Cibiv/IQ-TREE/blob/master/model/modelprotein.cpp)
 
