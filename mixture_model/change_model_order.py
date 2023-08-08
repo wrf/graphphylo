@@ -3,10 +3,13 @@
 '''
 change_model_order.py -i bur_hel_model.txt > bur_hel_model.hpi.txt
 
-    normal PAML AA order is alphabetical:
+    normal PAML AA order is alphabetical of amino acid name:
   ARNDCQEGHILKMFPSTWYV
     default new order is by hydrophobicity index:
   DPENKRQSGHTACYMVWLIF
+
+    sometimes, alphabetical order of the code is used instead:
+  ACDEFGHIKLMNPQRSTVWY
 '''
 
 import sys
