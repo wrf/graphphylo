@@ -242,5 +242,9 @@ Line 5, the `5000` only appears once in the code, hence is probably that:
 
 `SBDPProfileProcess.h:const int refnmodemax = 5000;`
 
+## homogeneity test
+On [Whelan 2015 dataset 16](https://figshare.com/articles/Error_signal_and_the_placement_of_Ctenophora_sister_to_all_other_animals/1334306) from a few years ago using [Homo.v1.4](https://github.com/lsjermiin/Homo.v1.4), new version [Homo.v2.1](https://github.com/lsjermiin/Homo.v2.1), demonstrating that a key phylogenetic assumption of homogeneity between taxa is FALSE.
 
+![whelan_d16_reorder_Pvalues_heatmap](https://github.com/wrf/graphphylo/blob/master/examples/whelan_d16_reorder_Pvalues_heatmap.png)
 
+![whelan_d16_reorder_summary_PP-plot.png](https://github.com/wrf/graphphylo/blob/master/examples/whelan_d16_reorder_summary_PP-plot.png)
